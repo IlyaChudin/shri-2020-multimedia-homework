@@ -22,10 +22,17 @@
       <video id="video-4" class="player__video" muted autoplay></video>
     </div>
     <div class="controls">
-      <label class="controls__label" for="brightness">Яркость</label>
-      <input type="range" min="0" max="2" value="1" step="0.1" id="brightness"/>
-      <label class="controls__label" for="contrast">Контрастность</label>
-      <input type="range" min="0" max="2" value="1" step="0.1" id="contrast"/>
+      <div class="controls__container">
+        <label class="controls__label" for="brightness">Яркость</label>
+        <input class="controls__input" type="range" min="0" max="2" value="1" step="0.1" id="brightness" />
+      </div>
+      <div class="controls__container">
+        <label class="controls__label" for="contrast">Контрастность</label>
+        <input class="controls__input" type="range" min="0" max="2" value="1" step="0.1" id="contrast" />
+      </div>
+      <div class="volume">
+        <div class="volume__indicator"></div>
+      </div>
       <button type="button" class="controls__show-dashboard">Все камеры</button>
     </div>
     <script src="script.js"></script>

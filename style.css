@@ -58,7 +58,6 @@ body {
 .controls {
   position: absolute;
   bottom: 0;
-  height: 50px;
   z-index: 100;
   width: 100%;
   color: white;
@@ -70,14 +69,51 @@ body {
   margin: 8px;
 }
 
+.controls__input {
+  width: 130px;
+  margin: 0;
+}
+
 .controls_visible {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.controls__container {
+  display: flex;
+}
+
 .controls__show-dashboard {
   width: 100px;
   margin: 8px;
   height: 34px;
+}
+
+.volume {
+  height: 34px;
+  border: 1px solid gray;
+  width: 100px;
+  margin: 8px;
+}
+
+.volume__indicator {
+  height: 100%;
+  background: greenyellow;
+}
+
+@media screen and (max-width: 567px) {
+  .controls_visible {
+    flex-direction: column;
+  }
+
+  .controls__label {
+    margin-left: 0;
+    margin-right: 0;
+    width: 130px;
+  }
+
+  .volume, .controls__show-dashboard {
+    width: 260px;
+  }
 }
