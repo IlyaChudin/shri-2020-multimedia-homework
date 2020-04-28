@@ -10,7 +10,6 @@ const contrastControl = document.getElementById("contrast");
 const brightnessAttr = "data-brightness";
 const contrastAttr = "data-contrast";
 
-const audioSources = new WeakMap();
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioContext.createAnalyser();
 analyser.fftSize = 512;
@@ -23,7 +22,10 @@ function updateVolume() {
   updateVolumeId = requestAnimationFrame(updateVolume);
 }
 
-document.querySelectorAll(".player__video").forEach((video) =>
+document.querySelectorAll(".player__video").forEach((video) => {
+  const source = audioContext.createMediaElementSource(video);
+  source.connect(analyser);
+  source.connect(audioContext.destination);
   video.addEventListener("click", (e) => {
     e.preventDefault();
     if (fullScreenVideo === undefined) {
@@ -33,28 +35,16 @@ document.querySelectorAll(".player__video").forEach((video) =>
       brightnessControl.value = fullScreenVideo.getAttribute(brightnessAttr) || 1;
       contrastControl.value = fullScreenVideo.getAttribute(contrastAttr) || 1;
       audioContext.resume();
-      let source = audioSources.get(fullScreenVideo);
-      if (source === undefined) {
-        source = audioContext.createMediaElementSource(fullScreenVideo);
-        audioSources.set(fullScreenVideo, source);
-      }
-      source.connect(analyser);
-      source.connect(audioContext.destination);
       updateVolume();
       player.classList.add(playerFullScreen);
       controls.classList.add(controlsVisible);
     }
-  })
-);
+  });
+});
 
 document.querySelector(".controls__show-dashboard").addEventListener("click", (e) => {
   if (fullScreenVideo) {
     fullScreenVideo.muted = true;
-    const source = audioSources.get(fullScreenVideo);
-    if (source) {
-      source.disconnect(analyser);
-      source.disconnect(audioContext.destination);
-    }
     cancelAnimationFrame(updateVolumeId);
     player.classList.remove(playerFullScreen);
     controls.classList.remove(controlsVisible);
