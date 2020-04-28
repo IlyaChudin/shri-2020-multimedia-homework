@@ -1,14 +1,22 @@
 let fullScreenVideo;
+let player;
 const playerFullScreen = "player_full_screen";
 const controlsVisible = "controls_visible";
 const controls = document.querySelector(".controls");
+const brightnessControl = document.getElementById("brightness");
+const contrastControl = document.getElementById("contrast");
+const brightnessAttr = "data-brightness";
+const contrastAttr = "data-contrast";
 
-document.querySelectorAll(".player").forEach((player) =>
-  player.addEventListener("click", (e) => {
+document.querySelectorAll(".player__video").forEach((video) =>
+  video.addEventListener("click", (e) => {
     e.preventDefault();
     if (fullScreenVideo === undefined) {
-      fullScreenVideo = player;
-      fullScreenVideo.classList.add(playerFullScreen);
+      fullScreenVideo = video;
+      player = fullScreenVideo.closest(".player");
+      brightnessControl.value = fullScreenVideo.getAttribute(brightnessAttr) || 1;
+      contrastControl.value = fullScreenVideo.getAttribute(contrastAttr) || 1;
+      player.classList.add(playerFullScreen);
       controls.classList.add(controlsVisible);
     }
   })
@@ -16,11 +24,25 @@ document.querySelectorAll(".player").forEach((player) =>
 
 document.querySelector(".controls__show-dashboard").addEventListener("click", (e) => {
   if (fullScreenVideo) {
-    fullScreenVideo.classList.remove(playerFullScreen);
-    fullScreenVideo = undefined;
+    player.classList.remove(playerFullScreen);
     controls.classList.remove(controlsVisible);
+    fullScreenVideo = undefined;
+    player = undefined;
   }
 });
+
+function updateFilter() {
+  if (fullScreenVideo) {
+    const brightness = brightnessControl.value;
+    const contrast = contrastControl.value;
+    fullScreenVideo.style.filter = `brightness(${brightness}) contrast(${contrast})`;
+    fullScreenVideo.setAttribute(brightnessAttr, brightness);
+    fullScreenVideo.setAttribute(contrastAttr, contrast);
+  }
+}
+
+brightnessControl.addEventListener("input", updateFilter);
+contrastControl.addEventListener("input", updateFilter);
 
 initVideo(
   document.getElementById("video-1"),

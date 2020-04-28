@@ -61,15 +61,23 @@ body {
   height: 50px;
   z-index: 100;
   width: 100%;
+  color: white;
+  background: black;
   display: none;
+}
+
+.controls__label {
+  margin: 8px;
 }
 
 .controls_visible {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .controls__show-dashboard {
   width: 100px;
-  height: 30px;
+  margin: 8px;
+  height: 34px;
 }
